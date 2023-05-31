@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Testing cookies</title>
+        <script src="hidrate_index.js"></script>
+    </head>
+    <body>
+        <style>
+            div {
+                height: 50px;
+                width: 150px;
+                background-color: blue;
+                text-align: center;
+                color: white;
+                padding-top: 25px;
+            }
+        </style>
+
+        <h2>Say hi to:</h2>
+        <h1 id="greet"></h1>
+        <br>
+        <br>
+        <p>
+            muhamad is the most common name in the world, so it is the most likely to be yours
+        </p>
+        <br>
+        <h4>If your name is not muhamad</h4>
+        <label for="name">Your actual name</label>
+        <input type="text" id="name" placeholder="Insert your name wich is not muhamad">
+        <div onclick="register(document.getElementById('name').value); document.getElementById('name').value = '';">Change your name</div>
+        <br>
+        <br>
+        <br>
+        <p>
+            Simple page to test basic cookie session auth with golang and js
+        </p>
+    </body>
+</html>
+
