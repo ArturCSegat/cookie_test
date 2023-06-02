@@ -4,17 +4,6 @@
         <script src="hidrate_index.js"></script>
     </head>
     <body>
-        <style>
-            div {
-                height: 50px;
-                width: 150px;
-                background-color: blue;
-                text-align: center;
-                color: white;
-                padding-top: 25px;
-            }
-        </style>
-
         <h2>Say hi to:</h2>
         <h1 id="greet"></h1>
         <br>
@@ -24,9 +13,8 @@
         </p>
         <br>
         <h4>If your name is not muhamad</h4>
-        <label for="name">Your actual name</label>
-        <input type="text" id="name" placeholder="Insert your name wich is not muhamad">
-        <div onclick="register(document.getElementById('name').value); document.getElementById('name').value = '';">Change your name</div>
+        <label for="name">A text file containing your name</label>
+        <input type="file" id="file_entry" onchange="read_files()">
         <br>
         <br>
         <br>

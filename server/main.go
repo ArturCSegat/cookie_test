@@ -1,9 +1,15 @@
 package main
 
 import (
+	// "bytes"
 	"fmt"
+	// "io"
+	"io/ioutil"
 	"net/http"
+	// "os"
+	// "strconv"
 	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -51,14 +57,27 @@ func name(c* gin.Context){
 
 func new_session(c * gin.Context){
     id := uuid.NewString()
+    
+    _, file_header, file_err := c.Request.FormFile("file")
+    if file_err != nil{
+        c.JSON(http.StatusBadRequest, gin.H{"error": file_err.Error()})
+        return
+    }
 
-    name := c.Param("name") 
+    file_content, _ := file_header.Open()
+    byte_container, err := ioutil.ReadAll(file_content)
+    if err != nil{
+        c.JSON(http.StatusBadRequest, gin.H{"error": file_err.Error()})
+        return
+    }
+
+    name := string(byte_container)
     exp := time.Now().Add(60 * time.Second)
-
+    
     sessions[id] = Session{name: name, exp:exp}
     fmt.Println(id)
     c.SetCookie("session_id", id, 60, "/", "localhost", false, false)
-
+    
     c.JSON(http.StatusOK, gin.H{"message": "session created for 60 seconds"})
 }
 
@@ -83,14 +102,11 @@ func main(){
         c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
         c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
-        if c.Request.Method == "OPTIONS" {
-            c.AbortWithStatus(http.StatusNoContent)
-        }
         c.Next()
     })
 
     r.GET("/name", name)
-    r.GET("/register/:name", new_session)
+    r.POST("/register", new_session)
     go clean_expired_sessions()
     r.Run(":3000")
 }
